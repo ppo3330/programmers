@@ -1,0 +1,51 @@
+//O(command.size())
+//string으로 주어진 시간들을 int형식으로 바꾼후 주어진 cammand를 이행 후 string으로 다시 변환하여 출력
+//크게 어려운 문제는 아니었찌만 시간을 변환하는 부분에서 실수가 있었음. - , + 를 할때 60진법과 10진법 차이를 신경쓰기.
+
+#include <string>
+#include <vector>
+
+using namespace std;
+
+string solution(string video_len, string pos, string op_start, string op_end, vector<string> commands) {
+    string answer = "";
+    int prestime = (pos[0]-'0')*1000 + (pos[1]-'0')*100 + (pos[3]-'0')*10 + (pos[4]-'0');
+    int opstarttime = (op_start[0]-'0')*1000 + (op_start[1]-'0')*100 + (op_start[3]-'0')*10 + (op_start[4]-'0');
+    int opendtime = (op_end[0]-'0')*1000 + (op_end[1]-'0')*100 + (op_end[3]-'0')*10 + (op_end[4]-'0');
+    int videndtime = (video_len[0]-'0')*1000 + (video_len[1]-'0')*100 + (video_len[3]-'0')*10 + (video_len[4]-'0');
+    
+    
+    for(int i=0;i<commands.size();i++){
+        if(opstarttime <= prestime and prestime <= opendtime){
+            prestime = opendtime;
+        }
+        
+        if(commands[i] == "prev"){
+            if(prestime <= 10) prestime = 0;
+            else if(prestime % 100 < 10) prestime -= 50;
+            else prestime -= 10;
+        }
+        else if(commands[i] == "next"){
+            int videndtime_minusten;
+            if(videndtime % 100 <10) videndtime_minusten = videndtime-50;
+            else videndtime_minusten = videndtime-10;
+            
+            if(prestime >= videndtime_minusten) prestime = videndtime;
+            else if(prestime % 100 >= 50) prestime += 50;
+            else prestime += 10;
+        }
+    }
+    
+    if(opstarttime <= prestime and prestime <= opendtime){
+            prestime = opendtime;
+    }
+    
+    answer += (prestime/1000 + '0');
+    answer += (prestime/100 %10 + '0');
+    answer += ':';
+    answer += (prestime/10 %10 + '0');
+    answer += (prestime % 10+ '0');
+    
+    
+    return answer;
+}

@@ -1,0 +1,28 @@
+#O(park^2)
+#park: park 2차원 배열크기.
+#park를 정사각형이라고 두고 풀어버려서 런타임 오류 + answer가 0 일떄 -1처리 안함 -> 해결
+
+def solution(mats, park):
+    answer = 0
+    parklen = len(park)
+    result = 0
+    chk = False
+    for i in range(parklen):
+        for j in range(len(park[i])):
+            K = 0
+            if park[i][j] == "-1": chk = True
+            while(i+K<parklen and j+K < len(park[i]) and chk == True):
+                for k in range(K):
+                    if park[i+K][j+k] != "-1" or park[i+k][j+K] != "-1":
+                        chk = False
+                        break
+                if chk == False:
+                    break
+                K+=1
+            result = max(result,K)
+    for i in mats:
+        if i > result:
+            continue
+        answer = max(answer,i) 
+    if answer == 0: return -1
+    return answer

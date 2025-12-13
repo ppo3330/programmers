@@ -1,0 +1,46 @@
+#O(data^2)
+#sort가 기억이 안나서 구현했음.
+#밑에 있는 코드 sorted 사용 + extidx를 by []에다가 code등을 넣고 by.index로 번호를 찾았음.
+
+def solution(data, ext, val_ext, sort_by):
+    answer = []
+    result = []
+    extidx = -1
+    sortidx = -1
+    if ext == "code": extidx = 0
+    elif ext == "date": extidx = 1
+    elif ext == "maximum": extidx = 2
+    else: extidx = 3
+    
+    if sort_by == "code": sortidx = 0
+    elif sort_by == "date": sortidx = 1
+    elif sort_by == "maximum": sortidx = 2
+    else: sortidx = 3
+
+    
+    for i in range(len(data)):
+        if(data[i][extidx] < val_ext):
+            result.append(data[i])
+
+    n = []
+    for i in range(len(result)):
+        answer.append(result[i])
+        for j in range(len(answer)-1,0,-1):
+            if answer[j][sortidx] < answer[j-1][sortidx]:
+                n = answer[j]
+                answer[j] = answer[j-1]
+                answer[j-1] = n 
+
+    return answer
+
+/*
+def solution(data, ext, val_ext, sort_by):
+    answer = []
+    by = ["code", "date", "maximum", "remain"]
+
+    for item in (data):
+        if(item[by.index(ext)] < val_ext):
+            answer.append(item)
+            
+    return sorted(answer, key = lambda x: x[by.index(sort_by)])
+*/
